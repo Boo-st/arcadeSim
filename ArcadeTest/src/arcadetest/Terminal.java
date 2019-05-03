@@ -5,7 +5,6 @@
  */
 package arcadetest;
 
-import java.util.HashSet;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
@@ -15,13 +14,12 @@ import java.util.logging.Logger;
 /**
  *
  * @author m128155
+ * Mitchel King
+ * 1/05/1029
  */
 public class Terminal {
-    private int money;
-    Scanner scanner = new Scanner(System.in);
-    Cards[] cardList= new Cards[10];
-    int counter =1;
-    
+   Scanner scanner = new Scanner(System.in);
+   Prizes prize = new Prizes();
    public void transfer(Cards card1, Cards card2)
    {
        card2.setTbalance(card1.getTbalance());
@@ -72,7 +70,8 @@ public class Terminal {
             System.out.println("1: Load credits\n2: Play game\n3: Request prize\n4: View balance\n5: Transfer credits\n6: Exit");
             String start = scanner.nextLine();
             
-             switch (start) {
+            switch (start)
+            {
             case "1":
                 Loadcash(card);
                 swipe(card, card1);
@@ -81,123 +80,148 @@ public class Terminal {
                 Games game = new Games();
                 System.out.println("Which game would you like to play");
                 System.out.println("1: Shooting\n2: Wack a mole\n3: Mortal Kombat");
-                int whichGame = Integer.parseInt(scanner.nextLine());
-                switch (whichGame) 
+                String whichGame = scanner.nextLine();
+                //get rid of int parse and empty string check for better error handling, change to string check
+                //which handles incorrect numbers and also letter input, disabled for all input testing options below
+                //if((!"NumberFormatException".equals(errorTest)))
+                //if((!"".equals(errorTest)))
                 {
-                    case 1:
-                        game.playShooting(card, card1);
-                        break;
-                    case 2:
-                        game.playWackamole(card, card1);
-                        break;
-                    case 3:
-                        game.playMortalkombat(card, card1);
-                        break;
-                    default:
-                        swipe(card, card1);
-                        break;
+                    //int whichGame = Integer.parseInt(errorTest);
+                    switch (whichGame) 
+                    {
+                        case "1":
+                            game.playShooting(card, card1);
+                            break;
+                        case "2":
+                            game.playWackamole(card, card1);
+                            break;
+                        case "3":
+                            game.playMortalkombat(card, card1);
+                            break;
+                        default:
+                            System.out.println("Please make a selection");
+                            swipe(card, card1);
+                            break;
+                    }                 
                 }
+//                else
+//                {
+//                    System.out.println("Please make a selection");
+//                    swipe(card, card1);
+//                }
                 break;
             case "3":
-                Prizes prize = new Prizes();
+//                Prizes prize = new Prizes();
                 System.out.println("We have a variety of plush toys to chose from, please make your selection");
                 System.out.println("1: Mammal - 20 tickets\n2: Insect - 50 tickets \n3: Fish - 100 tickets");
-                int prizeChoice = Integer.parseInt(scanner.nextLine());
-                switch(prizeChoice)
+                String prizeChoice = scanner.nextLine();
+                //if(!"".equals(errorTest))
                 {
-                    case 1:
-                        //check balance
-                        if(card.getTbalance()>20)
-                        {
-                            System.out.println("You have enough tickets, enhoy your prize!");
-                            //remove tickets from card, remove item from prize stock
-                            card.setTbalance(card.getTbalance()-20);
-                            prize.setMammals(1);
-                            
-                            //printing card data
-                            System.out.println("Your card number is: "+card.getNumber());
-                            System.out.println("Your new ticket count is: "+card.getTbalance());
-                            System.out.println("There are "+prize.getMammals()+" Mammals left");
+                    //int prizeChoice = Integer.parseInt(errorTest);
+                
+                    switch(prizeChoice)
+                    {
+                        case "1":
+                            //check balance
+                            if(card.getTbalance()>20)
+                            {
+                                System.out.println("You have enough tickets, enhoy your prize!");
+                                //remove tickets from card, remove item from prize stock
+                                card.setTbalance(card.getTbalance()-20);
+                                prize.setMammals(prize.getMammals());
 
-                            try 
-                            {
-                                //delay and then repeat menu
-                                TimeUnit.SECONDS.sleep(3);
-                            } 
-                            catch (InterruptedException ex) 
-                            {
-                                Logger.getLogger(Games.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                            swipe(card, card1);
-                        }
-                        else
-                        {
-                            System.out.println("You do not have enough tickets for this game");
-                            swipe(card, card1);
-                        }
-                        break;
-                    case 2:
-                        if(card.getTbalance()>50)
-                        {
-                            System.out.println("You have enough tickets, enhoy your prize!");
-                            //remove tickets from card, remove item from prize stock
-                            card.setTbalance(card.getTbalance()-50);
-                            prize.setInsect(1);
-                            
-                            //printing card data
-                            System.out.println("Your card number is: "+card.getNumber());
-                            System.out.println("Your new ticket count is: "+card.getTbalance());
-                            System.out.println("There are "+prize.getInsects()+" Insects left");
+                                //printing card data
+                                System.out.println("Your card number is: "+card.getNumber());
+                                System.out.println("Your new ticket count is: "+card.getTbalance());
+                                System.out.println("There are "+prize.getMammals()+" Mammals left");
 
-                            try 
-                            {
-                                //delay and then repeat menu
-                                TimeUnit.SECONDS.sleep(3);
-                            } 
-                            catch (InterruptedException ex) 
-                            {
-                                Logger.getLogger(Games.class.getName()).log(Level.SEVERE, null, ex);
+                                try 
+                                {
+                                    //delay and then repeat menu
+                                    TimeUnit.SECONDS.sleep(3);
+                                } 
+                                catch (InterruptedException ex) 
+                                {
+                                    Logger.getLogger(Games.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                swipe(card, card1);
                             }
-                            swipe(card, card1);
-                        }
-                        else
-                        {
-                            System.out.println("You do not have enough tickets for this game");
-                            swipe(card, card1);
-                        }
-                        break;
-                    case 3:
-                        if(card.getTbalance()>100)
-                        {
-                            System.out.println("You have enough tickets, enhoy your prize!");
-                            //remove tickets from card, remove item from prize stock
-                            card.setTbalance(card.getTbalance()-100);
-                            prize.setFish(1);
-                            
-                            //printing card data
-                            System.out.println("Your card number is: "+card.getNumber());
-                            System.out.println("Your new ticket count is: "+card.getTbalance());
-                            System.out.println("There are "+prize.getFish()+" Fish left");
+                            else
+                            {
+                                System.out.println("You do not have enough tickets for this game");
+                                swipe(card, card1);
+                            }
+                            break;
+                        case "2":
+                            if(card.getTbalance()>50)
+                            {
+                                System.out.println("You have enough tickets, enhoy your prize!");
+                                //remove tickets from card, remove item from prize stock
+                                card.setTbalance(card.getTbalance()-50);
+                                prize.setInsect(prize.getInsects());
 
-                            try 
-                            {
-                                //delay and then repeat menu
-                                TimeUnit.SECONDS.sleep(3);
-                            } 
-                            catch (InterruptedException ex) 
-                            {
-                                Logger.getLogger(Games.class.getName()).log(Level.SEVERE, null, ex);
+                                //printing card data
+                                System.out.println("Your card number is: "+card.getNumber());
+                                System.out.println("Your new ticket count is: "+card.getTbalance());
+                                System.out.println("There are "+prize.getInsects()+" Insects left");
+
+                                try 
+                                {
+                                    //delay and then repeat menu
+                                    TimeUnit.SECONDS.sleep(3);
+                                } 
+                                catch (InterruptedException ex) 
+                                {
+                                    Logger.getLogger(Games.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                swipe(card, card1);
                             }
+                            else
+                            {
+                                System.out.println("You do not have enough tickets for this game");
+                                swipe(card, card1);
+                            }
+                            break;
+                        case "3":
+                            if(card.getTbalance()>100)
+                            {
+                                System.out.println("You have enough tickets, enhoy your prize!");
+                                //remove tickets from card, remove item from prize stock
+                                card.setTbalance(card.getTbalance()-100);
+                                prize.setFish(prize.getFish());
+
+                                //printing card data
+                                System.out.println("Your card number is: "+card.getNumber());
+                                System.out.println("Your new ticket count is: "+card.getTbalance());
+                                System.out.println("There are "+prize.getFish()+" Fish left");
+
+                                try 
+                                {
+                                    //delay and then repeat menu
+                                    TimeUnit.SECONDS.sleep(3);
+                                } 
+                                catch (InterruptedException ex) 
+                                {
+                                    Logger.getLogger(Games.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                swipe(card, card1);
+                            }
+                            else
+                            {
+                                System.out.println("You do not have enough tickets for this prize");
+                                swipe(card, card1);
+                            }
+                            break;
+                        default:
+                            System.out.println("Please make a selection");
                             swipe(card, card1);
-                        }
-                        else
-                        {
-                            System.out.println("You do not have enough tickets for this game");
-                            swipe(card, card1);
-                        }
-                        break;
+                    }
                 }
-                break;
+//                else
+//                {
+//                    System.out.println("Please make a selection");
+//                    swipe(card, card1);
+//                }
                 
             case "4":
                 balance(card);
@@ -205,33 +229,41 @@ public class Terminal {
                 break;
                 
             case "5":
-                System.out.println("Would you like to transfer the contents of card 1, or card 2? Please enter 1 or 2");
-                int transferAnswer = Integer.parseInt(scanner.nextLine());
-       
-                switch(transferAnswer)
-                {
-                    case 1:
-                        System.out.println("Your card number is: "+card.getNumber());
-                        System.out.println("Your current ticket count is: "+card.getTbalance());
-                        System.out.println("Your current credit count is: "+card.getCbalance());
-                        
-                        transfer(card, card1);
-                        swipe(card, card1);
-                        break;
-                        
-                    case 2:
-                        System.out.println("Your card number is: "+card1.getNumber());
-                        System.out.println("Your current ticket count is: "+card1.getTbalance());
-                        System.out.println("Your current credit count is: "+card1.getCbalance());
-                        
-                        transfer(card1, card);
-                        swipe(card, card1);
-                        break;
-                    default:
-                        System.out.println("Please make a selection");
-                        swipe(card, card1);
+                System.out.println("Transferring the contents of your active card, to the second card");
+                //String transferAnswer = scanner.nextLine();
+                //if(!"".equals(errorTest))
+                {                          
+                    //int transferAnswer = Integer.parseInt(errorTest);
+                    //comment out un neccessary code, transfer will transfer active card to non active card
+                    //switch(transferAnswer)
+                    {
+                        //case "1":
+                            System.out.println("Your card number is: "+card.getNumber());
+                            System.out.println("Your current ticket count is: "+card.getTbalance());
+                            System.out.println("Your current credit count is: "+card.getCbalance());
+
+                            transfer(card, card1);
+                            swipe(card, card1);
+//                            break;
+//
+//                        case "2":
+//                            System.out.println("Your card number is: "+card.getNumber());
+//                            System.out.println("Your current ticket count is: "+card.getTbalance());
+//                            System.out.println("Your current credit count is: "+card.getCbalance());
+//
+//                            transfer(card, card1);
+//                            swipe(card, card1);
+//                            break;
+//                        default:
+//                            System.out.println("Please make a selection");
+//                            swipe(card, card1);
+                    }            
                 }
-                   
+//                else
+//                {
+//                    System.out.println("Please make a selection");
+//                    swipe(card, card1);
+//                }
                          
             case "6":
                 System.out.println("Thank you for playing, closing application");

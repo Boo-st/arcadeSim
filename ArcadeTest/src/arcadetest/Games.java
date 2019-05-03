@@ -13,7 +13,7 @@ import java.util.logging.Logger;
  *
  * @author m128155
  */
-public class Games {
+public class Games{
     Terminal term = new Terminal();
    
     public void playShooting(Cards card, Cards card1)

@@ -10,18 +10,25 @@ package arcadetest;
  * @author m128155
  */
 public class Prizes {
-    
-   private int mammals =10;
-   private int insect =10;
-   private int fish =10;
-   
+  
+   private int mammals;
+   private int insect;
+   private int fish;
+   //constructor for each new object of Prizes,
+   public Prizes()
+   {
+        mammals =10;
+        insect =10;
+        fish =10;
+   }
+     
    public int getMammals()
    {
        return mammals;
    }
    public void setMammals(int amount)
    {
-       mammals = mammals - amount;
+       mammals = amount -1;
    }
    public int getInsects()
    {
@@ -29,7 +36,7 @@ public class Prizes {
    }
    public void setInsect(int amount)
    {
-       insect = insect - amount;
+       insect = amount -1;
    }
    public int getFish()
    {
@@ -37,6 +44,6 @@ public class Prizes {
    }
    public void setFish(int amount)
    {
-       fish = fish - amount;
+       fish = amount -1;
    }
 }
