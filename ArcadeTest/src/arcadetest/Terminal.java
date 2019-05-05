@@ -267,6 +267,8 @@ public class Terminal {
                          
             case "6":
                 System.out.println("Thank you for playing, closing application");
+                System.exit(0);
+                //close pls
                 break;
             default:
                 System.out.println("Please make a selection");
